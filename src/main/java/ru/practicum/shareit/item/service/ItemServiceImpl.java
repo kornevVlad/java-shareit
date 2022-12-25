@@ -20,6 +20,7 @@ public class ItemServiceImpl implements ItemService {
         this.itemStorage = itemStorage;
         this.itemMapper = itemMapper;
     }
+
     @Override
     public ItemDto createItem(ItemDto itemDto, int ownerId) {
         return itemMapper.toItemDto(itemStorage.createItem(itemMapper.toItem(itemDto,ownerId)));
