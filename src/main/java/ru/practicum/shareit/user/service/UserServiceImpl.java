@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
-
     private final UserStorage userStorage;
 
     private final UserMapper userMapper;
@@ -42,14 +41,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getUsers() {
         List<UserDto> usersDto = new ArrayList<>();
-        for(User user : userStorage.getUsers()){
+        for (User user : userStorage.getUsers()) {
             usersDto.add(userMapper.toUserDto(user));
         }
         return usersDto;
     }
 
     @Override
-    public UserDto getUserById(int id){
+    public UserDto getUserById(int id) {
         return userMapper.toUserDto(userStorage.getUserById(id));
     }
 }

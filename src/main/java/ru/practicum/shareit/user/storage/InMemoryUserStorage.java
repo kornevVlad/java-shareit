@@ -17,30 +17,29 @@ public class InMemoryUserStorage implements UserStorage {
     private int id = 1;
     protected Map<Integer, User> users = new HashMap<>();
 
-
     @Override
     public User createUser(User user) {
         validationEmail(user);
         user.setId(id);
         users.put(id,user);
         id++;
-        log.info("User добавлен {}", users.size());
+        log.info("User добавлен {}",users.size());
         return users.get(user.getId());
     }
 
     @Override
     public User updateUser(User user, int id) {
         User upUser = users.get(id);
-        if((user.getName() != null)){
+        if ((user.getName() != null)) {
             upUser.setName(user.getName());
         }
-        if((user.getEmail() != null)){
+        if ((user.getEmail() != null)) {
             validationEmail(user);
             upUser.setEmail(user.getEmail());
         }
         upUser.setId(id);
         users.put(id, upUser);
-        log.info("User обновлен {}", upUser);
+        log.info("User обновлен {}",upUser);
         return upUser;
     }
 
@@ -56,14 +55,14 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User getUserById(int id){
+    public User getUserById(int id) {
         log.info("Размер списка User {}", users.size());
         return users.get(id);
     }
 
-    private User validationEmail(User user){
-        for(User userEmail : users.values()){
-            if(user.getEmail().equals(userEmail.getEmail())){
+    private User validationEmail(User user) {
+        for (User userEmail : users.values()) {
+            if (user.getEmail().equals(userEmail.getEmail())) {
                 throw new ValidationEmail("email уже существует");
             }
         }

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ItemServiceImpl implements ItemService{
+public class ItemServiceImpl implements ItemService {
 
     private final ItemStorage itemStorage;
     private final ItemMapper itemMapper;
@@ -38,7 +38,7 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public List<ItemDto> getItems(int ownerId) {
         List<ItemDto> itemsDto = new ArrayList<>();
-        for (Item item : itemStorage.getItems(ownerId)){
+        for (Item item : itemStorage.getItems(ownerId)) {
             itemsDto.add(itemMapper.toItemDto(item));
         }
         return itemsDto;
@@ -47,7 +47,7 @@ public class ItemServiceImpl implements ItemService{
     @Override
     public List<ItemDto> getItemsBySearch(String text) {
         List<ItemDto> itemsDto = new ArrayList<>();
-        for (Item item : itemStorage.getItemsBySearch(text)){
+        for (Item item : itemStorage.getItemsBySearch(text)) {
             itemsDto.add(itemMapper.toItemDto(item));
         }
         return itemsDto;

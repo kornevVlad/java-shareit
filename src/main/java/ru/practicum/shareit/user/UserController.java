@@ -32,13 +32,13 @@ public class UserController {
     }
 
     @GetMapping() //вывод списка пользователей
-    public List<UserDto> getUsers(){
+    public List<UserDto> getUsers() {
         log.info("Get Users");
         return userService.getUsers();
     }
 
     @GetMapping("/{userId}") //получение пользователя по id
-    public UserDto getUsersById(@PathVariable int userId){
+    public UserDto getUsersById(@PathVariable int userId) {
         log.info("Get UserById {}",userId);
         return userService.getUserById(userId);
     }
