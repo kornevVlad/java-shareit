@@ -69,7 +69,7 @@ public class InMemoryItemStorage implements ItemStorage {
         List<Item> itemList =  new ArrayList<>(items.values());
         List<Item> finalItems = new ArrayList<>();
         for (Item item : itemList) {
-            if (item.getOwner() == ownerId) {
+            if (item.getOwner().longValue() == ownerId.longValue()) {
                 finalItems.add(item);
             }
         }
@@ -113,7 +113,7 @@ public class InMemoryItemStorage implements ItemStorage {
     }
 
     private Item validationItemOwnerAndOtherOwner(Item item, Long itemId) {
-        if (item.getOwner() != items.get(itemId).getOwner()) {
+        if (item.getOwner().longValue() != items.get(itemId).getOwner().longValue()) {
             throw new ValidationNotFound("Предмет данного пользователя не найден");
         }
         return item;
