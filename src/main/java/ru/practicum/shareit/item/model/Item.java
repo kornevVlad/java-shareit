@@ -1,19 +1,21 @@
 package ru.practicum.shareit.item.model;
 
 import lombok.Data;
+import ru.practicum.shareit.item.status.ItemStatus;
+import ru.practicum.shareit.request.ItemRequest;
 
 @Data
 public class Item {
 
-    private int id;
+    private Long id;
 
     private String name;
 
     private String description;
 
-    private Boolean available; //статус о том, доступна или нет вещь для аренды
+    private ItemStatus available; //статус о том, доступна или нет вещь для аренды
 
-    private int owner; //владелец вещи;
+    private Long owner; //владелец вещи;
 
-    private String request; //хранинение ссылки запроса другого пользователя
+    private ItemRequest request; //хранинение ссылки запроса другого пользователя
 }

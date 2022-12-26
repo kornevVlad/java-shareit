@@ -3,6 +3,7 @@ package ru.practicum.shareit.item.storage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.status.ItemStatus;
 import ru.practicum.shareit.user.storage.InMemoryUserStorage;
 import ru.practicum.shareit.validation.ValidationNotFound;
 
@@ -15,9 +16,9 @@ import java.util.Map;
 @Slf4j
 public class InMemoryItemStorage implements ItemStorage {
 
-    private int itemId = 1;
+    private long itemId = 1;
 
-    private Map<Integer,Item> items = new HashMap<>();
+    private Map<Long,Item> items = new HashMap<>();
 
     private InMemoryUserStorage inMemoryUserStorage;
 
@@ -36,7 +37,7 @@ public class InMemoryItemStorage implements ItemStorage {
     }
 
     @Override
-    public Item updateItem(Item item, int itemId) {
+    public Item updateItem(Item item, Long itemId) {
         validationItemOwnerAndOtherOwner(item, itemId);
         validationItemUser(item.getOwner());
         Item upItem = items.get(itemId);
@@ -56,13 +57,13 @@ public class InMemoryItemStorage implements ItemStorage {
     }
 
     @Override
-    public Item getItemById(int itemId) {
+    public Item getItemById(Long itemId) {
         validationItem(itemId);
         return items.get(itemId);
     }
 
     @Override
-    public List<Item> getItems(int ownerId) {
+    public List<Item> getItems(Long ownerId) {
         validationItemUser(ownerId);
 
         List<Item> itemList =  new ArrayList<>(items.values());
@@ -83,7 +84,7 @@ public class InMemoryItemStorage implements ItemStorage {
         List<Item> finalItems = new ArrayList<>();
         if (!text.isEmpty()) {
             for (Item item : itemList) {
-                if (item.getAvailable()) {
+                if (item.getAvailable() == ItemStatus.TRUE) {
                     if (item.getName().toLowerCase().contains(text.toLowerCase())) {
                         finalItems.add(item);
                         log.info("Совпадение Name {}",item);
@@ -97,22 +98,22 @@ public class InMemoryItemStorage implements ItemStorage {
         return finalItems;
     }
 
-    private Integer validationItemUser(int id) {
-        if (inMemoryUserStorage.getUserById(id) == null) {
+    private Long validationItemUser(Long userId) {
+        if (inMemoryUserStorage.getUserById(userId) == null) {
             throw new ValidationNotFound("Пользователь предмета не найден");
         }
-        return id;
+        return userId;
     }
 
-    private Integer validationItem(int id) {
-        if (items.get(id) == null) {
+    private Long validationItem(Long itemId) {
+        if (items.get(itemId) == null) {
             throw new ValidationNotFound("Предмет с таким id не найден");
         }
-        return id;
+        return itemId;
     }
 
-    private Item validationItemOwnerAndOtherOwner(Item item, int id) {
-        if (item.getOwner() != items.get(id).getOwner()) {
+    private Item validationItemOwnerAndOtherOwner(Item item, Long itemId) {
+        if (item.getOwner() != items.get(itemId).getOwner()) {
             throw new ValidationNotFound("Предмет данного пользователя не найден");
         }
         return item;

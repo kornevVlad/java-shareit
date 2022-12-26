@@ -8,11 +8,11 @@ public interface ItemStorage {
 
     Item createItem(Item item);
 
-    Item updateItem(Item item, int itemId);
+    Item updateItem(Item item, Long itemId);
 
-    Item getItemById(int itemId);
+    Item getItemById(Long itemId);
 
-    List<Item> getItems(int ownerId);
+    List<Item> getItems(Long ownerId);
 
     List<Item> getItemsBySearch(String text);
 }

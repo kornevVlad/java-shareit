@@ -14,8 +14,8 @@ import java.util.Map;
 @Slf4j
 public class InMemoryUserStorage implements UserStorage {
 
-    private int id = 1;
-    protected Map<Integer, User> users = new HashMap<>();
+    private long id = 1;
+    protected Map<Long, User> users = new HashMap<>();
 
     @Override
     public User createUser(User user) {
@@ -28,7 +28,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User updateUser(User user, int id) {
+    public User updateUser(User user, Long id) {
         User upUser = users.get(id);
         if ((user.getName() != null)) {
             upUser.setName(user.getName());
@@ -44,7 +44,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public void deleteUser(int id) {
+    public void deleteUser(Long id) {
         users.remove(id);
         log.info("User id {} удален", id);
     }
@@ -55,7 +55,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public User getUserById(int id) {
+    public User getUserById(Long id) {
         log.info("Размер списка User {}", users.size());
         return users.get(id);
     }

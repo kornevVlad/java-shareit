@@ -16,13 +16,13 @@ public class ItemMapper {
         return itemDto;
     }
 
-    public Item toItem(ItemDto itemDto, int id) {
+    public Item toItem(ItemDto itemDto, Long userId) {
         Item item = new Item();
         item.setId(itemDto.getId());
         item.setName(itemDto.getName());
         item.setDescription(itemDto.getDescription());
         item.setAvailable(itemDto.getAvailable());
-        item.setOwner(id);
+        item.setOwner(userId);
         return item;
     }
 }

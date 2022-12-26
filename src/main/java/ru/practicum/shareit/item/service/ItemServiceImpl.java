@@ -22,22 +22,22 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemDto createItem(ItemDto itemDto, int ownerId) {
+    public ItemDto createItem(ItemDto itemDto, Long ownerId) {
         return itemMapper.toItemDto(itemStorage.createItem(itemMapper.toItem(itemDto,ownerId)));
     }
 
     @Override
-    public ItemDto updateItem(ItemDto itemDto, int itemId, int ownerId) {
+    public ItemDto updateItem(ItemDto itemDto, Long itemId, Long ownerId) {
         return itemMapper.toItemDto(itemStorage.updateItem(itemMapper.toItem(itemDto, ownerId), itemId));
     }
 
     @Override
-    public ItemDto getItemById(int itemId) {
+    public ItemDto getItemById(Long itemId) {
         return itemMapper.toItemDto(itemStorage.getItemById(itemId));
     }
 
     @Override
-    public List<ItemDto> getItems(int ownerId) {
+    public List<ItemDto> getItems(Long ownerId) {
         List<ItemDto> itemsDto = new ArrayList<>();
         for (Item item : itemStorage.getItems(ownerId)) {
             itemsDto.add(itemMapper.toItemDto(item));

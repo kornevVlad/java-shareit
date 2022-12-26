@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class User {
 
-    private int id;
+    private Long id;
 
     @NotBlank(message = "Имя пользователя не может быть пустым")
     private String name;
@@ -17,7 +17,7 @@ public class User {
     @NotBlank(message = "Email не может быть пустым")
     private String email;
 
-    public User(int id, String name, String email) {
+    public User(Long id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;

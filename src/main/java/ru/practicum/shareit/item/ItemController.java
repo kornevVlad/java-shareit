@@ -22,27 +22,27 @@ public class ItemController {
 
     @PostMapping() //создание предмета
     public ItemDto createItem(@Valid @RequestBody ItemDto itemDto,
-                              @RequestHeader("X-Sharer-User-Id") int ownerId) {
+                              @RequestHeader("X-Sharer-User-Id") Long ownerId) {
         log.info("Post Item {}, userId {}",itemDto,ownerId);
         return itemService.createItem(itemDto, ownerId);
     }
 
     @PatchMapping("/{itemId}") //обновление предмета
     public ItemDto updateItem(@RequestBody ItemDto itemDto,
-                              @PathVariable int itemId,
-                              @RequestHeader("X-Sharer-User-Id") int ownerId) {
+                              @PathVariable Long itemId,
+                              @RequestHeader("X-Sharer-User-Id") Long ownerId) {
         log.info("Patch Item {},itemId {}, userId {}",itemDto,itemId,ownerId);
         return itemService.updateItem(itemDto, itemId, ownerId);
     }
 
     @GetMapping("/{itemId}") //получение предмета по id
-    public ItemDto getItemById(@PathVariable int itemId) {
+    public ItemDto getItemById(@PathVariable Long itemId) {
         log.info("Get itemId {}",itemId);
         return itemService.getItemById(itemId);
     }
 
     @GetMapping() //список предметов
-    public List<ItemDto> getItems(@RequestHeader("X-Sharer-User-Id") int ownerId) {
+    public List<ItemDto> getItems(@RequestHeader("X-Sharer-User-Id") Long ownerId) {
         log.info("Get список предметов");
         return itemService.getItems(ownerId);
     }

@@ -2,6 +2,7 @@ package ru.practicum.shareit.request;
 
 import lombok.Builder;
 import lombok.Data;
+import ru.practicum.shareit.user.model.User;
 
 import java.time.LocalDateTime;
 
@@ -9,11 +10,11 @@ import java.time.LocalDateTime;
 @Builder
 public class ItemRequest {
 
-    private int id;
+    private Long id;
 
     private String description;
 
-    private int requestor; //пользователь, создавший запрос
+    private User requestor; //пользователь, создавший запрос
 
     private LocalDateTime created; //дата и время создания запроса
 }

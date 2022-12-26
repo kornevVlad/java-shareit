@@ -1,6 +1,7 @@
 package ru.practicum.shareit.item.dto;
 
 import lombok.Data;
+import ru.practicum.shareit.item.status.ItemStatus;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -9,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Data
 public class ItemDto {
 
-    private int id;
+    private Long id;
 
     @NotEmpty
     private String name;
@@ -18,5 +19,7 @@ public class ItemDto {
     private String description;
 
     @NotNull
-    private Boolean available; //статус доступа предмета
+    private ItemStatus available; //статус доступа предмета
+
+    private Long requestId; // id ссылки запроса другого пользователя
 }

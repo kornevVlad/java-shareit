@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class UserDto {
 
-    private int id;
+    private Long id;
 
     private String name;
 
