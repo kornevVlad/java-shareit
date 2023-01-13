@@ -9,6 +9,8 @@ import ru.practicum.shareit.booking.mapper.BookingMapper;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.repository.BookingRepository;
 import ru.practicum.shareit.booking.status.BookingStatus;
+import ru.practicum.shareit.item.model.Item;
+import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.item.status.ItemStatus;
 import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.validation.ValidationBadRequest;
@@ -28,19 +30,30 @@ public class BookingServiceImpl implements BookingService{
 
     private final UserRepository userRepository;
 
+    private final ItemRepository itemRepository;
+
     public BookingServiceImpl(BookingRepository bookingRepository,
                               BookingMapper bookingMapper,
-                              UserRepository userRepository) {
+                              UserRepository userRepository,
+                              ItemRepository itemRepository) {
         this.bookingRepository = bookingRepository;
         this.bookingMapper = bookingMapper;
         this.userRepository = userRepository;
+        this.itemRepository = itemRepository;
     }
 
     @Override
     public BookingDto createBooking(BookingRequestDto bookingDto, Long bookerId) {
+        validItemById(bookingDto.getItemId());
         validTime(bookingDto.getStart(), bookingDto.getEnd());
+        Item item = itemRepository.getReferenceById(bookingDto.getItemId());
+        if (item.getOwner().getId().equals(bookerId)) {
+            log.error("Владелец предмета не может бронировать собственный предмет");
+            throw new ValidationNotFound("NOT FOUND");
+        }
         Booking booking = bookingMapper.toBooking(bookingDto, bookerId);
         validStatusBooking(booking);
+
         log.info("Бронирование :  {}", booking);
         return bookingMapper.toBookingDto(bookingRepository.save(booking));
     }
@@ -184,6 +197,13 @@ public class BookingServiceImpl implements BookingService{
         if (!booking.getItem().getOwner().getId().equals(userId) &&
                 !booking.getBooker().getId().equals(userId)) {
             throw new ValidationNotFound("NOT FOUND USER ID " + userId );
+        }
+    }
+
+    private void validItemById(Long itemId) {
+        if (!itemRepository.existsById(itemId)) {
+            log.error("Предмет с id {} не найден", itemId);
+            throw new ValidationNotFound("Предмет с таким id не найден");
         }
     }
 }
