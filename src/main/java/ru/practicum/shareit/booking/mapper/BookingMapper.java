@@ -15,7 +15,6 @@ import ru.practicum.shareit.user.service.UserService;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 @Component
