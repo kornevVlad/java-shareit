@@ -36,7 +36,7 @@ public class BookingMapper {
         this.itemMapper = itemMapper;
     }
 
-    public Booking toBooking(BookingRequestDto bookingDto, User booker , Item item){
+    public Booking toBooking(BookingRequestDto bookingDto, User booker, Item item) {
         Booking booking = new Booking();
         booking.setStart(bookingDto.getStart());
         booking.setEnd(bookingDto.getEnd());
@@ -65,7 +65,7 @@ public class BookingMapper {
         return bookingDto;
     }
 
-    public List<BookingDto> toBookingDtoList(List<Booking> bookings) {
+    public List<BookingDto> toBookingDtoList(List<Booking>bookings) {
         List<BookingDto> bookingsDto = new ArrayList<>();
         for (Booking booking : bookings) {
             bookingsDto.add(toBookingDto(booking));

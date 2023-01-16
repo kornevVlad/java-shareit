@@ -17,7 +17,7 @@ public class ExceptionResponse {
         log.error("NOT FOUND");
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "BAD REQUEST" )
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "BAD REQUEST")
     @ExceptionHandler(ValidationBadRequest.class)
     public void errorValidationBadRequest() {
         log.error("BAD REQUEST");
@@ -27,6 +27,6 @@ public class ExceptionResponse {
     @ExceptionHandler(ExceptionState.class)
     public ErrorResponse errorValidationBadRequest(final ExceptionState e) {
         log.error("UNSUPPORTED_STATUS");
-        return new ErrorResponse(e.getMessage()) ;
+        return new ErrorResponse(e.getMessage());
     }
 }

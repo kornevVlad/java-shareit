@@ -143,7 +143,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private User validationUserById(Long ownerId) {
-        if(!userRepository.existsById(ownerId)) {
+        if (!userRepository.existsById(ownerId)) {
             log.error("Пользователь с id {} не найден", ownerId);
             throw new ValidationNotFound("Пользователь не найден");
         } else {
@@ -163,8 +163,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private Booking validationBookingByUserIdAndItemId(Long itemId, Long userId) {
-         Booking booking = bookingRepository.
-                findFirstByItemIdAndBookerIdAndEndIsBefore(itemId, userId, LocalDateTime.now());
+         Booking booking = bookingRepository.findFirstByItemIdAndBookerIdAndEndIsBefore(
+                 itemId, userId, LocalDateTime.now());
          if (booking == null) {
              log.error("Пользователь с ID={} не бронировал предмет с ID={}",userId, itemId);
              throw new ValidationBadRequest("Пользователь не бронировал предмет");

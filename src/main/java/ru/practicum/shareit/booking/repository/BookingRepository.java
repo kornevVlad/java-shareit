@@ -43,6 +43,6 @@ public interface BookingRepository extends JpaRepository<Booking,Long> {
     Booking findFirstByItemIdAndStartIsAfter(
             Long itemId, LocalDateTime time); //NEXTBOOKING
 
-    Booking findFirstByItemIdAndBookerIdAndEndIsBefore( //Бронировал пользователь данный предмет
-            Long itemId, Long userId, LocalDateTime time);
+    Booking findFirstByItemIdAndBookerIdAndEndIsBefore(
+            Long itemId, Long userId, LocalDateTime time);//Бронировал пользователь данный предмет
 }

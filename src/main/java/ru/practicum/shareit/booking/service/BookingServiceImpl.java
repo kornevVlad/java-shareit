@@ -24,7 +24,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class BookingServiceImpl implements BookingService{
+public class BookingServiceImpl implements BookingService {
 
     private final BookingRepository bookingRepository;
 
@@ -96,7 +96,7 @@ public class BookingServiceImpl implements BookingService{
 
         Booking booking = bookingRepository.getReferenceById(bookingId);
         validBookingByUserId(booking, userId);
-        log.info("get бронирование {}", booking );
+        log.info("get бронирование {}", booking);
         return bookingMapper.toBookingDto(booking);
     }
 
@@ -121,13 +121,13 @@ public class BookingServiceImpl implements BookingService{
 
             case "FUTURE":
                 return bookingMapper.toBookingDtoList(
-                        bookingRepository.
-                                findBookingsByBookerIdAndStartIsAfterOrderByStartDesc(bookerId, LocalDateTime.now()));
+                        bookingRepository.findBookingsByBookerIdAndStartIsAfterOrderByStartDesc(
+                                bookerId, LocalDateTime.now()));
 
             case "CURRENT":
                 return bookingMapper.toBookingDtoList(
-                        bookingRepository.findBookingByBookerIdAndStartIsBeforeAndEndIsAfter(bookerId,
-                                LocalDateTime.now(),LocalDateTime.now()));
+                        bookingRepository.findBookingByBookerIdAndStartIsBeforeAndEndIsAfter(
+                                bookerId, LocalDateTime.now(),LocalDateTime.now()));
             default:
                 throw new ExceptionState("Unknown state: " + state);
         }
@@ -171,7 +171,7 @@ public class BookingServiceImpl implements BookingService{
     }
 
     private void validUserById(Long userId) {
-        if(!userRepository.existsById(userId)) {
+        if (!userRepository.existsById(userId)) {
             log.error("Пользователь с id {} не найден", userId);
             throw new ValidationNotFound("Пользователь не найден");
         }
