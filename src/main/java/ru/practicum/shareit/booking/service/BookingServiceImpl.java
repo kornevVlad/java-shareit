@@ -178,14 +178,14 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private void validBookingById(Long bookingId) {
-        if(!bookingRepository.existsById(bookingId)) {
+        if (!bookingRepository.existsById(bookingId)) {
             log.error("Бронирование с id {} не найдено", bookingId);
             throw new ValidationNotFound("Бронирование не найдено");
         }
     }
     private void validTime(LocalDateTime start, LocalDateTime end) {
         if (start.isAfter(end)) {
-            log.error("Совпадение время start = {} и end = {}",start,end);
+            log.error("Совпадение время start = {} и end = {}",start, end);
             throw new ValidationBadRequest("BAD REQUEST");
         }
     }
@@ -201,7 +201,7 @@ public class BookingServiceImpl implements BookingService {
     private void validBookingByUserId(Booking booking, Long userId) {
         if (!booking.getItem().getOwner().getId().equals(userId) &&
                 !booking.getBooker().getId().equals(userId)) {
-            throw new ValidationNotFound("NOT FOUND USER ID " + userId );
+            throw new ValidationNotFound("NOT FOUND USER ID" + userId);
         }
     }
 

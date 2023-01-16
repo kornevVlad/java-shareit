@@ -65,7 +65,7 @@ public class BookingMapper {
         return bookingDto;
     }
 
-    public List<BookingDto> toBookingDtoList(List<Booking>bookings) {
+    public List<BookingDto> toBookingDtoList(List<Booking> bookings) {
         List<BookingDto> bookingsDto = new ArrayList<>();
         for (Booking booking : bookings) {
             bookingsDto.add(toBookingDto(booking));
