@@ -183,6 +183,7 @@ public class BookingServiceImpl implements BookingService {
             throw new ValidationNotFound("Бронирование не найдено");
         }
     }
+
     private void validTime(LocalDateTime start, LocalDateTime end) {
         if (start.isAfter(end)) {
             log.error("Совпадение время start = {} и end = {}",start, end);

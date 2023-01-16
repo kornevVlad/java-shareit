@@ -19,7 +19,8 @@ public interface BookingRepository extends JpaRepository<Booking,Long> {
             Long bookerId, LocalDateTime time); //PAST ByBookerId
 
     List<Booking> findBookingsByBookerIdAndStatusEquals(
-            Long bookerId,  BookingStatus status); //WAITING and REJECTED ByBookerId
+            Long bookerId, BookingStatus status); //WAITING and REJECTED ByBookerId
+
     List<Booking> findBookingByBookerIdAndStartIsBeforeAndEndIsAfter(
             Long bookerId, LocalDateTime time1, LocalDateTime time2); //CURRENT ByBookerId
 
