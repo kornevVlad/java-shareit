@@ -12,10 +12,12 @@ import ru.practicum.shareit.booking.status.BookingStatus;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.item.status.ItemStatus;
+import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.validation.ValidationBadRequest;
 import ru.practicum.shareit.validation.ValidationNotFound;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -43,15 +45,18 @@ public class BookingServiceImpl implements BookingService{
     }
 
     @Override
+    @Transactional
     public BookingDto createBooking(BookingRequestDto bookingDto, Long bookerId) {
         validItemById(bookingDto.getItemId());
         validTime(bookingDto.getStart(), bookingDto.getEnd());
+        validUserById(bookerId);
         Item item = itemRepository.getReferenceById(bookingDto.getItemId());
+        User booker = userRepository.getReferenceById(bookerId);
         if (item.getOwner().getId().equals(bookerId)) {
             log.error("Владелец предмета не может бронировать собственный предмет");
             throw new ValidationNotFound("NOT FOUND");
         }
-        Booking booking = bookingMapper.toBooking(bookingDto, bookerId);
+        Booking booking = bookingMapper.toBooking(bookingDto, booker, item);
         validStatusBooking(booking);
 
         log.info("Бронирование :  {}", booking);

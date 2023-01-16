@@ -7,32 +7,42 @@ import ru.practicum.shareit.booking.status.BookingStatus;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
 public interface BookingRepository extends JpaRepository<Booking,Long> {
 
-    List<Booking> findBookingByBookerIdOrderByStartDesc(Long bookerId); //get ALL ByBookerId
+    List<Booking> findBookingByBookerIdOrderByStartDesc(Long bookerId); //ALL ByBookerId
 
     List<Booking> findBookingsByBookerIdAndStartIsAfterOrderByStartDesc(
-            Long bookerId, LocalDateTime time); // get FUTURE ByBookerId
+            Long bookerId, LocalDateTime time); //FUTURE ByBookerId
 
     List<Booking> findBookingsByBookerIdAndEndIsBefore(
-            Long bookerId, LocalDateTime time); //get PAST ByBookerId
+            Long bookerId, LocalDateTime time); //PAST ByBookerId
 
     List<Booking> findBookingsByBookerIdAndStatusEquals(
-            Long bookerId,  BookingStatus status); //get WAITING and REJECTED ByBookerId
+            Long bookerId,  BookingStatus status); //WAITING and REJECTED ByBookerId
     List<Booking> findBookingByBookerIdAndStartIsBeforeAndEndIsAfter(
-            Long bookerId, LocalDateTime time1, LocalDateTime time2); //get CURRENT ByBookerId
+            Long bookerId, LocalDateTime time1, LocalDateTime time2); //CURRENT ByBookerId
 
-    List<Booking> findBookingsByItemOwnerIdOrderByStartDesc(Long ownerId); //get ALL ByBookerItems
+    List<Booking> findBookingsByItemOwnerIdOrderByStartDesc(Long ownerId); //ALL ByBookerItems
 
     List<Booking> findBookingsByItemOwnerIdAndStartIsBeforeAndEndIsAfter(
-            Long ownerId, LocalDateTime time1, LocalDateTime time2); //get CURRENT ByBookerItems
+            Long ownerId, LocalDateTime time1, LocalDateTime time2); //CURRENT ByBookerItems
 
     List<Booking> findBookingsByItemOwnerIdAndEndIsBefore(
-            Long ownerId, LocalDateTime time); //get PAST ByBookerItems
+            Long ownerId, LocalDateTime time); //PAST ByBookerItems
 
     List<Booking> findBookingsByItemOwnerIdAndStartIsAfterOrderByStartDesc(
-            Long ownerId, LocalDateTime time); //get FUTURE ByBookerItems
+            Long ownerId, LocalDateTime time); //FUTURE ByBookerItems
 
     List<Booking> findBookingsByItemOwnerIdAndStatusEquals(
-            Long ownerId, BookingStatus status); //get WAITING and REJECTED ByBookerItems
+            Long ownerId, BookingStatus status); //WAITING and REJECTED ByBookerItems
+
+    Booking findFirstByItemIdAndEndIsBeforeOrderByEndDesc(
+            Long itemId, LocalDateTime time); //LASTBOOKING
+
+    Booking findFirstByItemIdAndStartIsAfter(
+            Long itemId, LocalDateTime time); //NEXTBOOKING
+
+    Booking findFirstByItemIdAndBookerIdAndEndIsBefore( //Бронировал пользователь данный предмет
+            Long itemId, Long userId, LocalDateTime time);
 }

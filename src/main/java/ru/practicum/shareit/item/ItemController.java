@@ -3,7 +3,9 @@ package ru.practicum.shareit.item;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.*;
+import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
+import ru.practicum.shareit.item.dto.RequestCommentDto;
 import ru.practicum.shareit.item.service.ItemService;
 
 import javax.validation.Valid;
@@ -36,9 +38,10 @@ public class ItemController {
     }
 
     @GetMapping("/{itemId}") //получение предмета по id
-    public ItemDto getItemById(@PathVariable Long itemId) {
+    public ItemDto getItemById(@PathVariable Long itemId,
+                               @RequestHeader("X-Sharer-User-Id") Long userId) {
         log.info("Get itemId {}",itemId);
-        return itemService.getItemById(itemId);
+        return itemService.getItemById(itemId, userId);
     }
 
     @GetMapping() //список предметов
@@ -47,9 +50,16 @@ public class ItemController {
         return itemService.getItems(ownerId);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/search") //список предметов совпадение запроса по тексту
     public List<ItemDto> getItemsBySearchQuery(@RequestParam String text) {
         log.info("GET текстом {}", text);
         return itemService.getItemsBySearch(text);
+    }
+
+    @PostMapping("/{itemId}/comment") //создание комментария
+    public CommentDto addComment(@RequestBody @Valid RequestCommentDto requestCommentDto,
+                                 @PathVariable Long itemId,
+                                 @RequestHeader("X-Sharer-User-Id") Long userId) {
+        return itemService.createComment(requestCommentDto, itemId, userId);
     }
 }
