@@ -7,11 +7,7 @@ import ru.practicum.shareit.booking.dto.ItemBookingDto;
 import ru.practicum.shareit.booking.dto.UserBookingDto;
 import ru.practicum.shareit.booking.model.Booking;
 import ru.practicum.shareit.booking.status.BookingStatus;
-import ru.practicum.shareit.item.mapper.ItemMapper;
 import ru.practicum.shareit.item.model.Item;
-import ru.practicum.shareit.item.service.ItemService;
-import ru.practicum.shareit.user.mapper.UserMapper;
-import ru.practicum.shareit.user.service.UserService;
 import ru.practicum.shareit.user.model.User;
 
 import java.util.ArrayList;
@@ -19,22 +15,6 @@ import java.util.List;
 
 @Component
 public class BookingMapper {
-    private final UserService userService;
-
-    private final UserMapper userMapper;
-
-    private final ItemService itemService;
-
-    private final ItemMapper itemMapper;
-
-
-    public BookingMapper(UserService userService, UserMapper userMapper,
-                         ItemService itemService, ItemMapper itemMapper) {
-        this.userService = userService;
-        this.userMapper = userMapper;
-        this.itemService = itemService;
-        this.itemMapper = itemMapper;
-    }
 
     public Booking toBooking(BookingRequestDto bookingDto, User booker, Item item) {
         Booking booking = new Booking();
