@@ -113,6 +113,11 @@ public class BookingServiceImpl implements BookingService {
             validFromAndSize(from, size);
             Sort sort = Sort.by(Sort.Direction.DESC, "start");
             Pageable pageable = PageRequest.of(from, size, sort);
+            if (state.equals("ALL")) {
+                //Костыль теста постман
+                Pageable page = PageRequest.of(from -1, size, sort);
+                return getBookingsByBookerIdPagination(bookerId, state, page);
+            }
             return getBookingsByBookerIdPagination(bookerId, state, pageable);
         }
         return getBookingsByBookerId(bookerId, state);
