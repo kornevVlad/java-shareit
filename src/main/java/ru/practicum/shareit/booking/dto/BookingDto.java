@@ -15,9 +15,10 @@ public class BookingDto {
 
     private ItemBookingDto item; //вещь, которую пользователь бронирует;
 
-    //Проблема в том что тесты в Postman очень чувствительны и падают если возвращать Long bookerId
-    //По этой причине сделал отдельным DTO
-    //Логично сделать Long bookerId но тесты падают
+    /**Проблема в том что тесты в Postman очень чувствительны и падают если возвращать Long bookerId
+    * По этой причине сделал отдельным DTO
+    * Логично сделать Long bookerId но тесты падают
+     */
     private UserBookingDto booker; //пользователь, который осуществляет бронирование;
 
     private BookingStatus status; //статус бронирования

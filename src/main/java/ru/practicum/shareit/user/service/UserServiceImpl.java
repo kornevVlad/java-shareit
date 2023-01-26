@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto updateUser(UserDto userDto, Long id) {
-        User user = userRepository.getById(id);
+        User user = userRepository.getReferenceById(id);
         User upUser = userMapper.toUser(userDto);
         if (upUser.getName() != null) {
             user.setName(upUser.getName());
@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(Long id) {
         try {
-            return userMapper.toUserDto(userRepository.getById(id));
+            return userMapper.toUserDto(userRepository.getReferenceById(id));
         } catch (Exception vl) {
             log.info("Пользователь с id {} не найден", id);
             throw new ValidationNotFound(vl.getMessage());
