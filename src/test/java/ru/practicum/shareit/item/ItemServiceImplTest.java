@@ -6,21 +6,26 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import ru.practicum.shareit.booking.dto.BookingDto;
+import ru.practicum.shareit.booking.dto.BookingRequestDto;
+import ru.practicum.shareit.booking.service.BookingService;
+import ru.practicum.shareit.item.dto.CommentDto;
 import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.mapper.ItemMapper;
-import ru.practicum.shareit.item.model.Comment;
+import ru.practicum.shareit.item.dto.RequestCommentDto;
 import ru.practicum.shareit.item.service.ItemService;
 import ru.practicum.shareit.item.status.ItemStatus;
 import ru.practicum.shareit.user.dto.UserDto;
-import ru.practicum.shareit.user.mapper.UserMapper;
 import ru.practicum.shareit.user.service.UserService;
+import ru.practicum.shareit.validation.ValidationBadRequest;
 import ru.practicum.shareit.validation.ValidationNotFound;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import javax.transaction.Transactional;
-
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 @SpringBootTest
@@ -36,12 +41,7 @@ public class ItemServiceImplTest {
     private UserService userService;
 
     @Autowired
-    private ItemMapper itemMapper;
-
-    @Autowired
-    private UserMapper userMapper;
-
-    private Comment comment;
+    private BookingService bookingService;
 
     @Test
     void createItem() {
@@ -84,6 +84,64 @@ public class ItemServiceImplTest {
 
         assertThrows(ValidationNotFound.class, () ->
                 itemService.updateItem(itemDto2, 2L, userDto.getId()));
+    }
+
+    @Test
+    void getItemById() {
+        UserDto userDto = userService.createUser(getUserDto());
+        ItemDto itemDto = itemService.createItem(getItemDto(), userDto.getId());
+
+        ItemDto itemDto1 = itemService.getItemById(itemDto.getId(), userDto.getId());
+        assertEquals(itemDto.getId(), itemDto1.getId());
+        assertEquals(itemDto.getName(), itemDto1.getName());
+    }
+
+    @Test
+    void getItems() {
+        UserDto userDto = userService.createUser(getUserDto());
+        ItemDto itemDto = itemService.createItem(getItemDto(), userDto.getId());
+        List<ItemDto> items = itemService.getItems(userDto.getId());
+        assertEquals(items.size(), 1);
+    }
+
+    @Test
+    void getItemsBySearch(){
+        UserDto userDto = userService.createUser(getUserDto());
+        itemService.createItem(getItemDto(), userDto.getId());
+        List<ItemDto> items = itemService.getItemsBySearch("Предмет");
+        assertEquals(items.size(),1);
+        for (ItemDto itemDto : items) {
+            assertEquals(itemDto.getName(), getItemDto().getName());
+        }
+    }
+
+    @Test
+    void createComment() throws InterruptedException {
+        UserDto userDto = userService.createUser(getUserDto());
+        ItemDto itemDto = itemService.createItem(getItemDto(), userDto.getId());
+
+        UserDto userDto1 = new UserDto();
+        userDto1.setName("Edik");
+        userDto1.setEmail("edik@ya.ru");
+        UserDto userDto2 = userService.createUser(userDto1);
+
+        BookingRequestDto bookingRequestDto = new BookingRequestDto();
+        bookingRequestDto.setItemId(itemDto.getId());
+        bookingRequestDto.setStart(LocalDateTime.now());
+        bookingRequestDto.setEnd(LocalDateTime.now().plusSeconds(1));
+        BookingDto bookingDto = bookingService.createBooking(bookingRequestDto,userDto2.getId());
+        bookingService.updateBooking(bookingDto.getId(),userDto.getId(), true);
+
+        TimeUnit.SECONDS.sleep(2);
+
+        RequestCommentDto requestCommentDto = new RequestCommentDto();
+        requestCommentDto.setText("TEXT");
+        CommentDto commentDto = itemService.createComment(
+                requestCommentDto, itemDto.getId(), userDto2.getId());
+        assertEquals(commentDto.getText(), requestCommentDto.getText());
+
+        assertThrows(ValidationBadRequest.class, ()-> itemService.createComment(
+                requestCommentDto,itemDto.getId(),1L));
     }
 
     private ItemDto getItemDto() {
