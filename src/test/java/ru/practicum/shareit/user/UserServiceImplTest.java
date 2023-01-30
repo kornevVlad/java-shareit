@@ -66,7 +66,7 @@ public class UserServiceImplTest {
 
         assertEquals(userDto.getId(), id);
         userServiceImpl.deleteUser(id);
-        assertThrows(ValidationNotFound.class, () -> {userServiceImpl.getUserById(id);});
+        assertThrows(ValidationNotFound.class, () -> userServiceImpl.getUserById(id));
     }
 
     @Test
