@@ -120,7 +120,7 @@ public class BookingServiceImpl implements BookingService {
             }
             return getBookingsByBookerIdPagination(bookerId, state, pageable);
         }
-        return getBookingsByBookerId(bookerId, state);
+        return getBookingsByBookerIdNotPagination(bookerId, state);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class BookingServiceImpl implements BookingService {
             Pageable pageable = PageRequest.of(from, size, sort);
             return getBookingsByBookerItemsPagination(ownerId, state, pageable);
         }
-        return getBookingsByBookerItems(ownerId, state);
+        return getBookingsByBookerItemsNotPagination(ownerId, state);
     }
 
     private void validUserById(Long userId) {
@@ -178,7 +178,7 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    private List<BookingDto> getBookingsByBookerId(Long bookerId, String state){
+    private List<BookingDto> getBookingsByBookerIdNotPagination(Long bookerId, String state){
         switch (state) {
             case "ALL":
                 return bookingMapper.toBookingDtoList(
@@ -245,7 +245,7 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    public List<BookingDto> getBookingsByBookerItems(Long ownerId, String state) {
+    public List<BookingDto> getBookingsByBookerItemsNotPagination(Long ownerId, String state) {
         switch (state) {
             case "ALL":
                 return bookingMapper.toBookingDtoList(
