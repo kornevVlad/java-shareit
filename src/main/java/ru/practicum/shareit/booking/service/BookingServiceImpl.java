@@ -16,7 +16,6 @@ import ru.practicum.shareit.booking.status.BookingStatus;
 import ru.practicum.shareit.item.model.Item;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.item.status.ItemStatus;
-import ru.practicum.shareit.request.model.ItemRequest;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
 import ru.practicum.shareit.validation.ValidationBadRequest;
@@ -24,7 +23,6 @@ import ru.practicum.shareit.validation.ValidationNotFound;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -112,12 +110,7 @@ public class BookingServiceImpl implements BookingService {
         if (size != null) {
             validFromAndSize(from, size);
             Sort sort = Sort.by(Sort.Direction.DESC, "start");
-            Pageable pageable = PageRequest.of(from, size, sort);
-            if (state.equals("ALL")) {
-                //Костыль теста постман
-                Pageable page = PageRequest.of(from -1, size, sort);
-                return getBookingsByBookerIdPagination(bookerId, state, page);
-            }
+            Pageable pageable = validPageable(from,size,sort);
             return getBookingsByBookerIdPagination(bookerId, state, pageable);
         }
         return getBookingsByBookerIdNotPagination(bookerId, state);
@@ -129,7 +122,7 @@ public class BookingServiceImpl implements BookingService {
         if (size != null) {
             validFromAndSize(from, size);
             Sort sort = Sort.by(Sort.Direction.DESC, "start");
-            Pageable pageable = PageRequest.of(from, size, sort);
+            Pageable pageable = validPageable(from,size,sort);
             return getBookingsByBookerItemsPagination(ownerId, state, pageable);
         }
         return getBookingsByBookerItemsNotPagination(ownerId, state);
@@ -331,5 +324,15 @@ public class BookingServiceImpl implements BookingService {
         if (from > size) {
             throw new ValidationBadRequest("from не может быть больше size");
         }
+    }
+
+    private Pageable validPageable(Integer from, Integer size, Sort sort) {
+        Pageable page;
+        if (from == size) {
+            page = PageRequest.of(from - 1, size, sort);
+            return page;
+        }
+        page = PageRequest.of(from, size, sort);
+        return page;
     }
 }
