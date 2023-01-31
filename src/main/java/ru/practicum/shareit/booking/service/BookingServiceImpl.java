@@ -219,8 +219,8 @@ public class BookingServiceImpl implements BookingService {
                 return bookingMapper.toBookingPageDtoList(bookingsPage);
 
             case "REJECTED":
-                bookingsPage = bookingRepository.
-                        findBookingsByBookerIdAndStatusEquals(bookerId, BookingStatus.REJECTED, pageable);
+                bookingsPage = bookingRepository.findBookingsByBookerIdAndStatusEquals(
+                        bookerId, BookingStatus.REJECTED, pageable);
                 return bookingMapper.toBookingPageDtoList(bookingsPage);
 
             case "FUTURE":
