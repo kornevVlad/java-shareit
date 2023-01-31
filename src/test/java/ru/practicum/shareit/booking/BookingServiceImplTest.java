@@ -65,10 +65,10 @@ public class BookingServiceImplTest {
         bookingService.createBooking(
                 getBookingRequestDto(itemDto.getId()), userDto2.getId());
 
-        assertThrows(ValidationNotFound.class, ()-> bookingService.createBooking(
+        assertThrows(ValidationNotFound.class, () -> bookingService.createBooking(
                 getBookingRequestDto(2L), userDto2.getId()));
 
-        assertThrows(ValidationNotFound.class, ()-> bookingService.createBooking(
+        assertThrows(ValidationNotFound.class, () -> bookingService.createBooking(
                 getBookingRequestDto(itemDto.getId()), 3L));
 
         BookingRequestDto bookingRequestDto = new BookingRequestDto();
@@ -76,10 +76,10 @@ public class BookingServiceImplTest {
         bookingRequestDto.setStart(LocalDateTime.of(2023,2,3,1,1));
         bookingRequestDto.setEnd(LocalDateTime.of(2023,1,3,1,1));
 
-        assertThrows(ValidationBadRequest.class, ()-> bookingService.createBooking(
+        assertThrows(ValidationBadRequest.class, () -> bookingService.createBooking(
                 bookingRequestDto, userDto2.getId()));
 
-        assertThrows(ValidationNotFound.class, ()->  bookingService.createBooking(
+        assertThrows(ValidationNotFound.class, () ->  bookingService.createBooking(
                 getBookingRequestDto(itemDto.getId()), userDto.getId()));
     }
 
@@ -110,13 +110,13 @@ public class BookingServiceImplTest {
         BookingDto bookingDto = bookingService.createBooking(
                 getBookingRequestDto(itemDto.getId()), userDto2.getId());
 
-        assertThrows(ValidationNotFound.class, ()->bookingService.updateBooking(
+        assertThrows(ValidationNotFound.class, () -> bookingService.updateBooking(
                 bookingDto.getId(), userDto2.getId(), true));
 
         bookingService.updateBooking(
                 bookingDto.getId(), userDto.getId(), true);
 
-        assertThrows(ValidationBadRequest.class, ()-> bookingService.updateBooking(
+        assertThrows(ValidationBadRequest.class, () -> bookingService.updateBooking(
                 bookingDto.getId(), userDto.getId(), true));
 
     }
@@ -146,7 +146,7 @@ public class BookingServiceImplTest {
         userDto1.setEmail("ed@ya.ru");
         UserDto userDto2 = userService.createUser(userDto1);
 
-        BookingDto bookingDto = bookingService.createBooking(
+        bookingService.createBooking(
                 getBookingRequestDto(itemDto.getId()), userDto2.getId());
 
         List<BookingDto> bookingDtos = bookingService.getBookingsByBookerId(
@@ -157,7 +157,7 @@ public class BookingServiceImplTest {
                 userDto2.getId(), "ALL",1,null);
         assertEquals(bookingDtos1.size(),1);
 
-        assertThrows(ExceptionState.class, ()-> bookingService.getBookingsByBookerId(
+        assertThrows(ExceptionState.class, () -> bookingService.getBookingsByBookerId(
                 userDto2.getId(), "HELLO",1,null));
 
     }

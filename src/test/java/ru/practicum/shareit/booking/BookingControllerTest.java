@@ -104,7 +104,7 @@ public class BookingControllerTest {
     void getBookingsByBookerId() throws Exception {
         List<BookingDto> bookingDtos = new ArrayList<>();
         bookingDtos.add(getBookingDto());
-        when(bookingService.getBookingsByBookerId( any(Long.class), any(String.class),
+        when(bookingService.getBookingsByBookerId(any(Long.class), any(String.class),
                 any(Integer.class), nullable(Integer.class)))
                 .thenReturn(bookingDtos);
 

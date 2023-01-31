@@ -68,8 +68,7 @@ public class ItemRequestServiceImpl implements ItemRequestService {
         List<ItemRequest> itemRequests = itReqRepository.findAllByRequestorId(requestorId);
         List<ItemRequestDto> itemRequestDtoList = new ArrayList<>();
         for (ItemRequest itReq : itemRequests) {
-            ItemRequestDto itemRequestDto = itReqMapper.
-                    toItemRequestDtoAndItemDto(itReq, getItemsDto(itReq.getId()));
+            ItemRequestDto itemRequestDto = itReqMapper.toItemRequestDtoAndItemDto(itReq, getItemsDto(itReq.getId()));
             itemRequestDtoList.add(itemRequestDto);
         }
         log.info("Список запросов пользователя с ID {}, количество {}", requestorId, itemRequestDtoList.size());

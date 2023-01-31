@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @SpringBootTest
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -66,8 +65,8 @@ public class ItemRequestServiceImplTest {
         UserDto userDto = userService.createUser(getUserDto());
         ItemRequestDto itemRequestDto = itemRequestService.createItemRequest(
                 getItemRequestDto(), userDto.getId(), LocalDateTime.now());
-        ItemRequestDto itemRequestDto1 = itemRequestService.
-                getItemRequestById(itemRequestDto.getId(), userDto.getId());
+        ItemRequestDto itemRequestDto1 = itemRequestService.getItemRequestById(
+                itemRequestDto.getId(), userDto.getId());
         assertEquals(itemRequestDto1.getId(), itemRequestDto.getId());
         assertEquals(itemRequestDto1.getDescription(), itemRequestDto.getDescription());
     }

@@ -105,7 +105,7 @@ public class ItemServiceImplTest {
     }
 
     @Test
-    void getItemsBySearch(){
+    void getItemsBySearch() {
         UserDto userDto = userService.createUser(getUserDto());
         itemService.createItem(getItemDto(), userDto.getId());
         List<ItemDto> items = itemService.getItemsBySearch("Предмет");
@@ -140,7 +140,7 @@ public class ItemServiceImplTest {
                 requestCommentDto, itemDto.getId(), userDto2.getId());
         assertEquals(commentDto.getText(), requestCommentDto.getText());
 
-        assertThrows(ValidationBadRequest.class, ()-> itemService.createComment(
+        assertThrows(ValidationBadRequest.class, () -> itemService.createComment(
                 requestCommentDto,itemDto.getId(),1L));
     }
 

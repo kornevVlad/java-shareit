@@ -171,7 +171,7 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-    private List<BookingDto> getBookingsByBookerIdNotPagination(Long bookerId, String state){
+    private List<BookingDto> getBookingsByBookerIdNotPagination(Long bookerId, String state) {
         switch (state) {
             case "ALL":
                 return bookingMapper.toBookingDtoList(
@@ -209,13 +209,13 @@ public class BookingServiceImpl implements BookingService {
                 bookingsPage = bookingRepository.findBookingByBookerIdOrderByStartDesc(bookerId, pageable);
                 return bookingMapper.toBookingPageDtoList(bookingsPage);
             case "PAST":
-                bookingsPage = bookingRepository.
-                        findBookingsByBookerIdAndEndIsBefore(bookerId, LocalDateTime.now(), pageable);
+                bookingsPage = bookingRepository.findBookingsByBookerIdAndEndIsBefore(
+                        bookerId, LocalDateTime.now(), pageable);
                 return bookingMapper.toBookingPageDtoList(bookingsPage);
 
             case "WAITING":
-                bookingsPage = bookingRepository.
-                        findBookingsByBookerIdAndStatusEquals(bookerId, BookingStatus.WAITING, pageable);
+                bookingsPage = bookingRepository.findBookingsByBookerIdAndStatusEquals(
+                        bookerId, BookingStatus.WAITING, pageable);
                 return bookingMapper.toBookingPageDtoList(bookingsPage);
 
             case "REJECTED":
