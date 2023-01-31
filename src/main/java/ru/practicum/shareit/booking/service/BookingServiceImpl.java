@@ -328,7 +328,7 @@ public class BookingServiceImpl implements BookingService {
 
     private Pageable validPageable(Integer from, Integer size, Sort sort) {
         Pageable page;
-        if (from == size) {
+        if (from.equals(size)) {
             page = PageRequest.of(from - 1, size, sort);
             return page;
         }
