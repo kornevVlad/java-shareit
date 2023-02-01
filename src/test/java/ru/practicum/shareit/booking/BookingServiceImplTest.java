@@ -40,6 +40,29 @@ public class BookingServiceImplTest {
     @Autowired
     private ItemService itemService;
 
+    private UserDto getUserDto() {
+        UserDto userDto = new UserDto();
+        userDto.setName("VL");
+        userDto.setEmail("vl@ya.ru");
+        return userDto;
+    }
+
+    private ItemDto getItemDto() {
+        ItemDto itemDto = new ItemDto();
+        itemDto.setName("Предмет");
+        itemDto.setDescription("Предмет предмет");
+        itemDto.setAvailable(ItemStatus.TRUE);
+        return itemDto;
+    }
+
+    private BookingRequestDto getBookingRequestDto(Long itemId) {
+        BookingRequestDto bookingRequestDto = new BookingRequestDto();
+        bookingRequestDto.setItemId(itemId);
+        bookingRequestDto.setStart(LocalDateTime.now());
+        bookingRequestDto.setEnd(LocalDateTime.now().plusSeconds(1));
+        return bookingRequestDto;
+    }
+
     @Test
     void createBooking() {
         UserDto userDto = userService.createUser(getUserDto());
@@ -138,7 +161,12 @@ public class BookingServiceImplTest {
     }
 
     @Test
-    void getBookingsByBookerId() {
+    void getBookingValidBookingId() {
+        assertThrows(ValidationNotFound.class, () -> bookingService.getBooking(1L, 1L));
+    }
+
+    @Test
+    void getBookingsByBookerIdNotNullPagination() {
         UserDto userDto = userService.createUser(getUserDto());
         ItemDto itemDto = itemService.createItem(getItemDto(), userDto.getId());
         UserDto userDto1 = new UserDto();
@@ -153,17 +181,33 @@ public class BookingServiceImplTest {
                 userDto2.getId(), "ALL",1,1);
         assertEquals(bookingDtos.size(),1);
 
-        List<BookingDto> bookingDtos1 = bookingService.getBookingsByBookerId(
-                userDto2.getId(), "ALL",1,null);
-        assertEquals(bookingDtos1.size(),1);
+        List<BookingDto> bookingDtos2 = bookingService.getBookingsByBookerId(
+                userDto2.getId(), "WAITING",1,1);
+        assertEquals(bookingDtos2.size(),1);
+
+        List<BookingDto> bookingDtos3 = bookingService.getBookingsByBookerId(
+                userDto2.getId(), "FUTURE",1,2);
+        assertEquals(bookingDtos3.size(),0);
+
+       /** List<BookingDto> bookingDtos4 = bookingService.getBookingsByBookerId(
+        *       userDto2.getId(), "CURRENT",1,3);
+       * assertEquals(bookingDtos4.size(),1);*/
+
+        List<BookingDto> bookingDtos5 = bookingService.getBookingsByBookerId(
+                userDto2.getId(), "PAST",1,2);
+        assertEquals(bookingDtos5.size(),0);
+
+        List<BookingDto> bookingDtos6 = bookingService.getBookingsByBookerId(
+                userDto2.getId(), "REJECTED",1,2);
+        assertEquals(bookingDtos6.size(),0);
+
 
         assertThrows(ExceptionState.class, () -> bookingService.getBookingsByBookerId(
-                userDto2.getId(), "HELLO",1,null));
-
+                userDto2.getId(), "HELLO",1,2));
     }
 
     @Test
-    void getBookingsByBookerItems() {
+    void getBookingsByBookerIdNullPagination() {
         UserDto userDto = userService.createUser(getUserDto());
         ItemDto itemDto = itemService.createItem(getItemDto(), userDto.getId());
         UserDto userDto1 = new UserDto();
@@ -171,37 +215,129 @@ public class BookingServiceImplTest {
         userDto1.setEmail("ed@ya.ru");
         UserDto userDto2 = userService.createUser(userDto1);
 
-        BookingDto bookingDto = bookingService.createBooking(
+        bookingService.createBooking(
+                getBookingRequestDto(itemDto.getId()), userDto2.getId());
+
+        List<BookingDto> bookingDtos1 = bookingService.getBookingsByBookerId(
+                userDto2.getId(), "ALL",1,null);
+        assertEquals(bookingDtos1.size(),1);
+
+        List<BookingDto> bookingDtos2 = bookingService.getBookingsByBookerId(
+                userDto2.getId(), "WAITING",1,null);
+        assertEquals(bookingDtos2.size(),1);
+
+        List<BookingDto> bookingDtos3 = bookingService.getBookingsByBookerId(
+                userDto2.getId(), "FUTURE",1,null);
+        assertEquals(bookingDtos3.size(),0);
+
+        List<BookingDto> bookingDtos4 = bookingService.getBookingsByBookerId(
+                userDto2.getId(), "CURRENT",1,null);
+        assertEquals(bookingDtos4.size(),1);
+
+        List<BookingDto> bookingDtos5 = bookingService.getBookingsByBookerId(
+                userDto2.getId(), "PAST",1,null);
+        assertEquals(bookingDtos5.size(),0);
+
+        List<BookingDto> bookingDtos6 = bookingService.getBookingsByBookerId(
+                userDto2.getId(), "REJECTED",1,null);
+        assertEquals(bookingDtos6.size(),0);
+
+
+        assertThrows(ExceptionState.class, () -> bookingService.getBookingsByBookerId(
+                userDto2.getId(), "HELLO",1,null));
+    }
+
+    @Test
+    void getBookingsByBookerItemsPagination() {
+        UserDto userDto = userService.createUser(getUserDto());
+        ItemDto itemDto = itemService.createItem(getItemDto(), userDto.getId());
+        UserDto userDto1 = new UserDto();
+        userDto1.setName("ED");
+        userDto1.setEmail("ed@ya.ru");
+        UserDto userDto2 = userService.createUser(userDto1);
+
+        bookingService.createBooking(
                 getBookingRequestDto(itemDto.getId()), userDto2.getId());
         List<BookingDto> bookingDtos = bookingService.getBookingsByBookerItems(
                 userDto.getId(), "ALL", 1, 1);
         assertEquals(bookingDtos.size(), 1);
 
         List<BookingDto> bookingDtos1 = bookingService.getBookingsByBookerItems(
-                userDto.getId(), "ALL", 1, null);
+                userDto.getId(), "WAITING", 1, 1);
         assertEquals(bookingDtos1.size(), 1);
+
+        List<BookingDto> bookingDtos2 = bookingService.getBookingsByBookerItems(
+                userDto.getId(), "PAST", 1, 1);
+        assertEquals(bookingDtos2.size(), 0);
+
+        List<BookingDto> bookingDtos3 = bookingService.getBookingsByBookerItems(
+                userDto.getId(), "FUTURE", 1, 1);
+        assertEquals(bookingDtos3.size(), 0);
+
+        List<BookingDto> bookingDtos4 = bookingService.getBookingsByBookerItems(
+                userDto.getId(), "REJECTED", 1, 1);
+        assertEquals(bookingDtos4.size(), 0);
+
+        assertThrows(ExceptionState.class, () -> bookingService.getBookingsByBookerId(
+                userDto2.getId(), "HELLO",1,1));
     }
 
-    private UserDto getUserDto() {
-        UserDto userDto = new UserDto();
-        userDto.setName("VL");
-        userDto.setEmail("vl@ya.ru");
-        return userDto;
+    @Test
+    void getBookingsByBookerItemsNullPagination() {
+        UserDto userDto = userService.createUser(getUserDto());
+        ItemDto itemDto = itemService.createItem(getItemDto(), userDto.getId());
+        UserDto userDto1 = new UserDto();
+        userDto1.setName("ED");
+        userDto1.setEmail("ed@ya.ru");
+        UserDto userDto2 = userService.createUser(userDto1);
+
+        bookingService.createBooking(
+                getBookingRequestDto(itemDto.getId()), userDto2.getId());
+        List<BookingDto> bookingDtos = bookingService.getBookingsByBookerItems(
+                userDto.getId(), "ALL", 1, null);
+        assertEquals(bookingDtos.size(), 1);
+
+        List<BookingDto> bookingDtos1 = bookingService.getBookingsByBookerItems(
+                userDto.getId(), "WAITING", 1, null);
+        assertEquals(bookingDtos1.size(), 1);
+
+        List<BookingDto> bookingDtos2 = bookingService.getBookingsByBookerItems(
+                userDto.getId(), "PAST", 1, null);
+        assertEquals(bookingDtos2.size(), 0);
+
+        List<BookingDto> bookingDtos3 = bookingService.getBookingsByBookerItems(
+                userDto.getId(), "FUTURE", 1, null);
+        assertEquals(bookingDtos3.size(), 0);
+
+        List<BookingDto> bookingDtos4 = bookingService.getBookingsByBookerItems(
+                userDto.getId(), "REJECTED", 1, null);
+        assertEquals(bookingDtos4.size(), 0);
+
+        assertThrows(ExceptionState.class, () -> bookingService.getBookingsByBookerId(
+                userDto2.getId(), "HELLO",1,null));
     }
 
-    private ItemDto getItemDto() {
-        ItemDto itemDto = new ItemDto();
-        itemDto.setName("Предмет");
-        itemDto.setDescription("Предмет предмет");
-        itemDto.setAvailable(ItemStatus.TRUE);
-        return itemDto;
-    }
+    @Test
+    void validFromAndSize() {
+        UserDto userDto = userService.createUser(getUserDto());
+        ItemDto itemDto = itemService.createItem(getItemDto(), userDto.getId());
+        UserDto userDto1 = new UserDto();
+        userDto1.setName("ED");
+        userDto1.setEmail("ed@ya.ru");
+        UserDto userDto2 = userService.createUser(userDto1);
+        bookingService.createBooking(
+                getBookingRequestDto(itemDto.getId()), userDto2.getId());
 
-    private BookingRequestDto getBookingRequestDto(Long itemId) {
-        BookingRequestDto bookingRequestDto = new BookingRequestDto();
-        bookingRequestDto.setItemId(itemId);
-        bookingRequestDto.setStart(LocalDateTime.now());
-        bookingRequestDto.setEnd(LocalDateTime.now().plusSeconds(1));
-        return bookingRequestDto;
+        assertThrows(ValidationBadRequest.class, () -> bookingService.getBookingsByBookerItems(
+                userDto.getId(), "ALL", -1, 1));
+
+        assertThrows(ValidationBadRequest.class, () -> bookingService.getBookingsByBookerItems(
+                userDto.getId(), "ALL", 1, -1));
+
+        assertThrows(ValidationBadRequest.class, () -> bookingService.getBookingsByBookerItems(
+                userDto.getId(), "ALL", 1, 0));
+
+        assertThrows(ValidationBadRequest.class, () -> bookingService.getBookingsByBookerItems(
+                userDto.getId(), "ALL", 10, 2));
     }
 }
