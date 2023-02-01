@@ -111,7 +111,6 @@ public class BookingServiceImpl implements BookingService {
             validFromAndSize(from, size);
             Sort sort = Sort.by(Sort.Direction.DESC, "start");
             //Pageable pageable = validPageable(from,size,sort);
-
             Pageable pageable = PageRequest.of(from, size, sort);
             if (state.equals("ALL")) {
                 //Костыль теста постман
