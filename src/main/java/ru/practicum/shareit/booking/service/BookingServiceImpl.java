@@ -333,6 +333,7 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
+    /**
     private Pageable validPageable(Integer from, Integer size, Sort sort) {
         Pageable page;
         if (from.equals(size)) {
@@ -342,4 +343,5 @@ public class BookingServiceImpl implements BookingService {
         page = PageRequest.of(from, size, sort);
         return page;
     }
+     */
 }
