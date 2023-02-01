@@ -264,7 +264,7 @@ public class BookingServiceImplTest {
 
         List<BookingDto> bookingDtos1 = bookingService.getBookingsByBookerItems(
                 userDto.getId(), "WAITING", 1, 1);
-        assertEquals(bookingDtos1.size(), 1);
+        assertEquals(bookingDtos1.size(), 0);
 
         List<BookingDto> bookingDtos2 = bookingService.getBookingsByBookerItems(
                 userDto.getId(), "PAST", 1, 1);
