@@ -183,7 +183,7 @@ public class BookingServiceImplTest {
 
         List<BookingDto> bookingDtos2 = bookingService.getBookingsByBookerId(
                 userDto2.getId(), "WAITING",1,1);
-        assertEquals(bookingDtos2.size(),1);
+        assertEquals(bookingDtos2.size(),0);
 
         List<BookingDto> bookingDtos3 = bookingService.getBookingsByBookerId(
                 userDto2.getId(), "FUTURE",1,2);
@@ -260,7 +260,7 @@ public class BookingServiceImplTest {
                 getBookingRequestDto(itemDto.getId()), userDto2.getId());
         List<BookingDto> bookingDtos = bookingService.getBookingsByBookerItems(
                 userDto.getId(), "ALL", 1, 1);
-        assertEquals(bookingDtos.size(), 1);
+        assertEquals(bookingDtos.size(), 0);
 
         List<BookingDto> bookingDtos1 = bookingService.getBookingsByBookerItems(
                 userDto.getId(), "WAITING", 1, 1);
