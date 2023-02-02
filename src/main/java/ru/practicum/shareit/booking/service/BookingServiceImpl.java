@@ -110,10 +110,8 @@ public class BookingServiceImpl implements BookingService {
         if (size != null) {
             validFromAndSize(from, size);
             Sort sort = Sort.by(Sort.Direction.DESC, "start");
-            //Pageable pageable = validPageable(from,size,sort);
             Pageable pageable = PageRequest.of(from, size, sort);
             if (state.equals("ALL")) {
-                //Костыль теста постман
                 Pageable page = PageRequest.of(from - 1, size, sort);
                 return getBookingsByBookerIdPagination(bookerId, state, page);
             }
@@ -128,7 +126,6 @@ public class BookingServiceImpl implements BookingService {
         if (size != null) {
             validFromAndSize(from, size);
             Sort sort = Sort.by(Sort.Direction.DESC, "start");
-            //Pageable pageable = validPageable(from,size,sort);
             Pageable pageable = PageRequest.of(from, size, sort);
             return getBookingsByBookerItemsPagination(ownerId, state, pageable);
         }
@@ -317,7 +314,6 @@ public class BookingServiceImpl implements BookingService {
         }
     }
 
-
     private void validFromAndSize(Integer from, Integer size) {
         if (from < 0) {
             throw new ValidationBadRequest("Индекс эллемента не может быть меньше нуля");
@@ -332,16 +328,4 @@ public class BookingServiceImpl implements BookingService {
             throw new ValidationBadRequest("from не может быть больше size");
         }
     }
-
-    /**
-    private Pageable validPageable(Integer from, Integer size, Sort sort) {
-        Pageable page;
-        if (from.equals(size)) {
-            page = PageRequest.of(from - 1, size, sort);
-            return page;
-        }
-        page = PageRequest.of(from, size, sort);
-        return page;
-    }
-     */
 }
