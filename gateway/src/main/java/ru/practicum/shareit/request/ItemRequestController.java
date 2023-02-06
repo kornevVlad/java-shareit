@@ -21,8 +21,8 @@ public class ItemRequestController {
     @PostMapping
     public ResponseEntity<Object> createItemRequest(@RequestHeader("X-Sharer-User-Id") Long requestorId,
                                                    @Valid @RequestBody RequestDto requestDto) {
-        log.info("POST создание запроса предмета = {}, пользователем ID {}, описание {} "
-                ,requestDto, requestorId, requestDto.getDescription());
+        log.info("POST создание запроса предмета = {}, пользователем ID {}, описание {} ",
+                requestDto ,requestorId ,requestDto.getDescription());
         return requestClient.createItemRequest(requestDto, requestorId);
     }
 

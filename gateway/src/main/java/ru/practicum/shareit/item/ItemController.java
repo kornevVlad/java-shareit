@@ -9,7 +9,6 @@ import ru.practicum.shareit.item.dto.ItemDto;
 
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/items")

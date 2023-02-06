@@ -11,7 +11,6 @@ import ru.practicum.shareit.booking.dto.BookItemRequestDto;
 import ru.practicum.shareit.booking.dto.BookingState;
 import ru.practicum.shareit.client.BaseClient;
 
-import java.util.Map;
 
 @Service
 public class BookingClient extends BaseClient {
@@ -36,7 +35,7 @@ public class BookingClient extends BaseClient {
     }
 
     public ResponseEntity<Object> getBooking(long userId, Long bookingId) {
-        return get("/"+ bookingId, userId);
+        return get("/" + bookingId, userId);
     }
 
     public ResponseEntity<Object> getBookings(long userId, BookingState state, Integer from, Integer size) {
