@@ -1,21 +1,21 @@
 version: '3.8'
 services:
   gateway:
-    build: share-gateway
-    #image:
-    container_name: share-gateway
+    build: gateway
+    image: gateway-image
+    container_name: gateway_container
     ports:
       - "8080:8080"
     depends_on:
-      - share-server
+      - server
       - bd
     environment:
       - SHAREIT_SERVER_URL=http://server:9090
 
   server:
-    build: share-server
-    #image:
-    container_name: share-server
+    build: server
+    image: server-image
+    container_name: server_container
     ports:
       - "9090:9090"
     depends_on:
