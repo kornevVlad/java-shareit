@@ -22,7 +22,7 @@ public class ItemRequestController {
     public ResponseEntity<Object> createItemRequest(@RequestHeader("X-Sharer-User-Id") Long requestorId,
                                                    @Valid @RequestBody RequestDto requestDto) {
         log.info("POST создание запроса предмета = {}, пользователем ID {}, описание {} ",
-                requestDto ,requestorId ,requestDto.getDescription());
+                requestDto, requestorId, requestDto.getDescription());
         return requestClient.createItemRequest(requestDto, requestorId);
     }
 
