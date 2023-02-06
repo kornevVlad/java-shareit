@@ -3,9 +3,7 @@ package ru.practicum.shareit.user.model;
 import lombok.Data;
 
 import javax.persistence.*;
-/**import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-*/
+
 @Data
 @Entity
 @Table(name = "users")
@@ -20,7 +18,5 @@ public class User {
     private String name;
 
     @Column(name = "email")
-    //@Email(message = "Email не корректен")
-    //@NotBlank(message = "Email не может быть пустым")
     private String email;
 }
