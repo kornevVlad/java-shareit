@@ -45,7 +45,6 @@ BookingController {
 		return bookingClient.getBooking(userId, bookingId);
 	}
 
-
 	@GetMapping
 	public ResponseEntity<Object> getBookings(@RequestHeader("X-Sharer-User-Id") long userId,
 			@RequestParam(name = "state", defaultValue = "all") String stateParam,
