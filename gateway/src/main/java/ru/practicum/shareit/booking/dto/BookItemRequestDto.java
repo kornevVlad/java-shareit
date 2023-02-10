@@ -9,16 +9,17 @@ import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import ru.practicum.shareit.validation_interface.Create;
 
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class BookItemRequestDto {
 
-	@NotNull
+	@NotNull(groups = Create.class)
 	private long itemId;
-	@FutureOrPresent
+	@FutureOrPresent(groups = Create.class)
 	private LocalDateTime start;
-	@Future
+	@Future(groups = Create.class)
 	private LocalDateTime end;
 }
